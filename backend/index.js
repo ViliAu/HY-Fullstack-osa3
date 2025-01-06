@@ -29,12 +29,12 @@ let persons = [
 app.use(cors());
 app.use(express.json());
 
-app.use('/', express.static(path.join(__dirname, 'dist')))
-
 morgan.token('body', req => {
   return JSON.stringify(req.body)
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+app.use('/', express.static(path.join(__dirname, 'dist')))
 
 app.get('/api/persons', (req, res) => {
   return res.json(persons)
@@ -89,7 +89,6 @@ app.put('/api/persons/:id', (req, res) => {
     return res.status(404).send("Person not found");
   }
 });
-
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
