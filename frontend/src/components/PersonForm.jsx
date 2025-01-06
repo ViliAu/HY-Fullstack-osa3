@@ -17,7 +17,7 @@ const PersonForm = ({persons, setPersons, showMessage}) => {
   const submitform = async (event) => {
     event.preventDefault();
     const newPerson = {name: newName, number: newNumber};
-    const existingPerson = persons.filter(p => p.name === newName)[0];
+    const existingPerson = persons.find(p => p.name === newName);
     if (existingPerson) {
       if (window.confirm(`${existingPerson.name} is already added to phonebook, replace the number with a new one?`)) {
         try {
@@ -26,15 +26,21 @@ const PersonForm = ({persons, setPersons, showMessage}) => {
           showMessage(false, `Updated ${data.name}`);
         }
         catch(e) {
-          showMessage(true, `Unable to update ${newName}`);
+          showMessage(true, `Unable to update ${newName}: ${e.response.data.error}`);
           setPersons(await personService.getAll());
         }
       }
     }
     else {
-      const data = await personService.addPerson(newPerson);
-      setPersons(persons.concat(data));
-      showMessage(false, `Added ${data.name}`);
+      try {
+        const data = await personService.addPerson(newPerson);
+        setPersons(persons.concat(data));
+        showMessage(false, `Added ${data.name}`);
+      }
+      catch(e) {
+        showMessage(true, `Operation failed: ${e.response.data.error}`);
+        setPersons(await personService.getAll());
+      }
     }
   }
 

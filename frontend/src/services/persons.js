@@ -20,7 +20,8 @@ const addPerson = async (personObject) => {
         return res.data;
     }
     catch(e) {
-        console.log(e)
+        console.log(e);
+        throw e;
     }
 }
 
@@ -31,7 +32,7 @@ const deletePerson = async (id) => {
         return res.data;
     }
     catch(e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
@@ -43,6 +44,7 @@ const updatePerson = async (id, data) => {
     }
     catch(e) {
         console.log(e)
+        throw e;
     }
 }
 
