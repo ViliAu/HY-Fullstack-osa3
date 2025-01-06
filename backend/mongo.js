@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Person = require('./models/person');
+const Person = require('./models/person')
 
 if (process.argv.length<3) {
   console.log('give password as argument')
@@ -15,29 +15,29 @@ mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
 if (process.argv.length === 3) {
-    Person.find({}).then((d, e) => {
-        if (e) {
-            console.log(e);
-            mongoose.connection.close();
-            return;
-        }
-        console.log(d);
-        mongoose.connection.close();
-    });
+  Person.find({}).then((d, e) => {
+    if (e) {
+      console.log(e)
+      mongoose.connection.close()
+      return
+    }
+    console.log(d)
+    mongoose.connection.close()
+  })
 }
 else if (process.argv.length >= 5) {
-    const person = new Person({
-        name: process.argv[3],
-        number: process.argv[4],
-    })
-    person.save().then((d, e) => {
-        if (e) {
-            console.log(e);
-            mongoose.connection.close();
-            return;
-        }
-        console.log("Person added");
-        mongoose.connection.close();
-    });
+  const person = new Person({
+    name: process.argv[3],
+    number: process.argv[4],
+  })
+  person.save().then((d, e) => {
+    if (e) {
+      console.log(e)
+      mongoose.connection.close()
+      return
+    }
+    console.log('Person added')
+    mongoose.connection.close()
+  })
 }
 
